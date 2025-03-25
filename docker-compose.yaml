@@ -23,8 +23,8 @@ services:
     container_name: kafka
     volumes:
       - kafka-data:/var/lib/kafka/data
-    ports:
-      - '0.0.0.0:9092:9092'
+    expose:
+      - 9092
     restart: on-failure
     depends_on:
       - zookeeper
@@ -50,8 +50,8 @@ services:
     restart: on-failure
     volumes:
       - redis-data:/data
-    ports:
-      - '0.0.0.0:6379:6379'
+    expose:
+      - 6379
     command:
       - redis-server
       - --save 60 1
@@ -62,8 +62,8 @@ services:
     container_name: postgres
     image: ${POSTGRES_IMAGE_NAME:-ankane/pgvector:v0.5.1}
     restart: on-failure
-    ports:
-      - '0.0.0.0:5432:5432'
+    expose:
+      - 5432
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -80,9 +80,9 @@ services:
     container_name: clickhouse
     image: ${CLICKHOUSE_IMAGE_NAME:-clickhouse/clickhouse-server:24.3.15.72-alpine}
     restart: on-failure
-    ports:
-      - '0.0.0.0:8123:8123'
-      - '0.0.0.0:9000:9000'
+    expose:
+      - 8123
+      - 9000
     volumes:
       - ./config.xml:/etc/clickhouse-server/config.d/highlight.xml
       - ./users.xml:/etc/clickhouse-server/users.d/highlight.xml
@@ -104,19 +104,19 @@ services:
     volumes:
       - ./backend/localhostssl/server.crt:/server.crt
       - ./backend/localhostssl/server.key:/server.key
-    ports:
-      - '0.0.0.0:24224:24224'
-      - '0.0.0.0:34302:34302'
-      - '0.0.0.0:4317:4317'
-      - '0.0.0.0:4318:4318'
-      - '0.0.0.0:4319:4319'
-      - '0.0.0.0:4433:4433'
-      - '0.0.0.0:4434:4434'
-      - '0.0.0.0:4435:4435'
-      - '0.0.0.0:6513:6513'
-      - '0.0.0.0:6514:6514'
-      - '0.0.0.0:8318:8318'
-      - '0.0.0.0:8888:8888'
+    expose:
+      - 24224
+      - 34302
+      - 4317
+      - 4318
+      - 4319
+      - 4433
+      - 4434
+      - 4435
+      - 6513
+      - 6514
+      - 8318
+      - 8888
 
   predictions:
     logging: *local-logging
@@ -125,16 +125,16 @@ services:
       dockerfile: ./packages/predictions/predictions.Dockerfile
       context: .
     container_name: predictions
-    ports:
-      - '0.0.0.0:5001:5001'
+    expose:
+      - 5001
 
   # Highlight application services
   backend:
     container_name: backend
     image: ${BACKEND_IMAGE_NAME:-ghcr.io/highlight/highlight-backend:latest}
     restart: on-failure
-    ports:
-      - '0.0.0.0:8082:8082'
+    expose:
+      - 8082
     volumes:
       - highlight-data:/highlight-data
       - ./backend/env.enc:/build/env.enc
@@ -158,10 +158,10 @@ services:
     volumes:
       - ./backend/localhostssl/server.key:/etc/ssl/private/ssl-cert.key
       - ./backend/localhostssl/server.pem:/etc/ssl/certs/ssl-cert.pem
-    ports:
-      - '0.0.0.0:3000:3000'
-      - '0.0.0.0:6006:6006'
-      - '0.0.0.0:8080:8080'
+    expose:
+      - 3000
+      - 6006
+      - 8080
     env_file: .env
     depends_on:
       - backend
