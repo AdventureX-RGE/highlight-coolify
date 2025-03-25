@@ -1,0 +1,61 @@
+# Docker compose config
+COMPOSE_PATH_SEPARATOR=:
+COMPOSE_PROJECT_NAME=highlight
+
+# Docker images for highlight app
+BACKEND_IMAGE_NAME=ghcr.io/highlight/highlight-backend:docker-v0.5.2
+FRONTEND_IMAGE_NAME=ghcr.io/highlight/highlight-frontend:docker-v0.5.2
+
+# Docker images for dependencies
+CLICKHOUSE_IMAGE_NAME=clickhouse/clickhouse-server:24.3.15.72-alpine
+KAFKA_IMAGE_NAME=confluentinc/cp-kafka:7.7.0
+OTEL_COLLECTOR_BUILD_IMAGE_NAME=alpine:3.21.3
+OTEL_COLLECTOR_IMAGE_NAME=otel/opentelemetry-collector-contrib:0.120.0
+POSTGRES_IMAGE_NAME=ankane/pgvector:v0.5.1
+REDIS_IMAGE_NAME=redis:7.4.0
+ZOOKEEPER_IMAGE_NAME=confluentinc/cp-zookeeper:7.7.0
+
+# Environment variables
+CLICKHOUSE_ADDRESS=clickhouse:9000
+CLICKHOUSE_DATABASE=default
+CLICKHOUSE_PASSWORD=
+CLICKHOUSE_USERNAME=default
+CONSUMER_SPAN_SAMPLING_FRACTION=1
+DOPPLER_CONFIG=docker
+EMAIL_OPT_OUT_SALT=salt
+ENVIRONMENT=dev
+GOMEMLIMIT=16GiB
+IN_DOCKER=true
+IN_DOCKER_GO=true
+KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+KAFKA_SERVERS=kafka:9092
+KAFKA_TOPIC=dev
+OAUTH_REDIRECT_URL=https://localhost:8082/private/oauth/callback
+OBJECT_STORAGE_FS=/highlight-data
+ON_PREM=true
+OTLP_DOGFOOD_ENDPOINT=https://otel.highlight.io:4318
+OTLP_ENDPOINT=http://collector:4318
+PSQL_DB=postgres
+PSQL_DOCKER_HOST=postgres
+PSQL_HOST=postgres
+PSQL_PASSWORD=
+PSQL_PORT=5432
+PSQL_USER=postgres
+REACT_APP_DISABLE_ANALYTICS=false
+REACT_APP_FRONTEND_ORG=1
+REACT_APP_FRONTEND_URI=http://localhost:3000
+REACT_APP_IN_DOCKER=true
+REACT_APP_PRIVATE_GRAPH_URI=http://localhost:8082/private
+REACT_APP_PUBLIC_GRAPH_URI=http://localhost:8082/public
+REACT_APP_OTLP_ENDPOINT=http://localhost:4318
+REDIS_EVENTS_STAGING_ENDPOINT=redis:6379
+RENDER_PREVIEW=true
+SESSION_FILE_PATH_PREFIX=/tmp/
+SESSION_RETENTION_DAYS=30
+TZ=America/Los_Angeles
+
+# Note: turning on SSL requires updating otel-collector.yaml / otel-collector.hobby.yaml to use https
+SSL=false
+DISABLE_CORS=false
+REACT_APP_AUTH_MODE=password
+ADMIN_PASSWORD=password

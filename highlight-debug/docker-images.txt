@@ -1,0 +1,8 @@
+highlight-predictions                  latest              304340d9fceb   2 days ago      1.52GB
+highlight-collector                    latest              6fa7a63dc8d8   2 days ago      297MB
+ghcr.io/highlight/highlight-frontend   docker-v0.5.2       6ef02452cf9c   6 weeks ago     157MB
+ghcr.io/highlight/highlight-backend    docker-v0.5.2       eb8c3f1b073e   6 weeks ago     188MB
+clickhouse/clickhouse-server           24.3.15.72-alpine   5e8f3dfb4637   2 months ago    835MB
+redis                                  7.4.0               345f80b79535   7 months ago    140MB
+confluentinc/cp-kafka                  7.7.0               c7ae590d4f54   8 months ago    853MB
+confluentinc/cp-zookeeper              7.7.0               2b25b8781830   8 months ago    853MB

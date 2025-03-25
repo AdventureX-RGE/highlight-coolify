@@ -1,0 +1,8 @@
+local     highlight_clickhouse-data
+local     highlight_clickhouse-logs
+local     highlight_highlight-data
+local     highlight_kafka-data
+local     highlight_postgres-data
+local     highlight_redis-data
+local     highlight_zoo-data
+local     highlight_zoo-log

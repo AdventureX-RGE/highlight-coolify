@@ -1,0 +1,23 @@
+# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
+*
+!docker*
+!*/docker*
+!*/*docker*
+!Dockerfile*
+!docker-compose*
+!*.sh
+!compose*.yml
+!env.sh
+!start-infra.sh
+!docker/.env
+!docker/**/.env
+!*migration*
+!migrations/
+!*/migrations/
+!**/migrations/
+!backend/
+!*/backend/
+!**/backend/
+!*.yaml
+!*.yml
+!*.env*
