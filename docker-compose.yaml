@@ -84,8 +84,8 @@ services:
       - 8123
       - 9000
     volumes:
-      - ./config.xml:/etc/clickhouse-server/config.d/highlight.xml
-      - ./users.xml:/etc/clickhouse-server/users.d/highlight.xml
+      - ./docker/config.xml:/etc/clickhouse-server/config.d/highlight.xml
+      - ./docker/users.xml:/etc/clickhouse-server/users.d/highlight.xml
       - clickhouse-data:/var/lib/clickhouse
       - clickhouse-logs:/var/log/clickhouse-server
 
