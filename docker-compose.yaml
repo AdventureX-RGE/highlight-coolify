@@ -139,7 +139,10 @@ services:
       - ./backend/env.enc.dgst:/build/env.enc.dgst
       - ./backend/localhostssl/server.key:/build/localhostssl/server.key
       - ./backend/localhostssl/server.crt:/build/localhostssl/server.crt
-    env_file: .env
+    environment:
+      CLICKHOUSE_DATABASE_URL: http://hl_clickhouse:8123  # ✅ 添加 ClickHouse 连接地址
+      POSTGRES_HOST_AUTH_METHOD: trust
+      # 你还可以在这里加其他环境变量（如 Redis/Kafka 配置）
     depends_on:
       - clickhouse
       - kafka
