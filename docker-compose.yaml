@@ -4,15 +4,14 @@ x-local-logging: &local-logging
   driver: local
 
 services:
-  # Infrastructure services
   zookeeper:
     logging: *local-logging
     image: ${ZOOKEEPER_IMAGE_NAME:-confluentinc/cp-zookeeper:7.7.0}
-    container_name: zookeeper-hg-adv
+    container_name: hl_zookeeper
     restart: on-failure
     volumes:
-      - zoo-data:/var/lib/zookeeper/data
-      - zoo-log:/var/lib/zookeeper/log
+      - hl_zoo-data:/var/lib/zookeeper/data
+      - hl_zoo-log:/var/lib/zookeeper/log
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -20,9 +19,9 @@ services:
   kafka:
     logging: *local-logging
     image: ${KAFKA_IMAGE_NAME:-confluentinc/cp-kafka:7.7.0}
-    container_name: kafka-hg-adv
+    container_name: hl_kafka
     volumes:
-      - kafka-data:/var/lib/kafka/data
+      - hl_kafka-data:/var/lib/kafka/data
     expose:
       - 9092
     restart: on-failure
@@ -45,11 +44,11 @@ services:
 
   redis:
     logging: *local-logging
-    container_name: redis-hg-adv
+    container_name: hl_redis
     image: ${REDIS_IMAGE_NAME:-redis:7.4.0}
     restart: on-failure
     volumes:
-      - redis-data:/data
+      - hl_redis-data:/data
     expose:
       - 6379
     command:
@@ -59,7 +58,7 @@ services:
 
   postgres:
     logging: *local-logging
-    container_name: postgres-hg-adv
+    container_name: hl_postgres
     image: ${POSTGRES_IMAGE_NAME:-ankane/pgvector:v0.5.1}
     restart: on-failure
     expose:
@@ -67,7 +66,7 @@ services:
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - hl_postgres-data:/var/lib/postgresql/data
       - ./scripts/migrations/init.sql:/root/init.sql
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']
@@ -77,7 +76,7 @@ services:
 
   clickhouse:
     logging: *local-logging
-    container_name: clickhouse-hg-adv
+    container_name: hl_clickhouse
     image: ${CLICKHOUSE_IMAGE_NAME:-clickhouse/clickhouse-server:24.3.15.72-alpine}
     restart: on-failure
     expose:
@@ -86,8 +85,8 @@ services:
     volumes:
       - ./docker/config.xml:/etc/clickhouse-server/config.d/highlight.xml
       - ./docker/users.xml:/etc/clickhouse-server/users.d/highlight.xml
-      - clickhouse-data:/var/lib/clickhouse
-      - clickhouse-logs:/var/log/clickhouse-server
+      - hl_clickhouse-data:/var/lib/clickhouse
+      - hl_clickhouse-logs:/var/log/clickhouse-server
 
   collector:
     logging: *local-logging
@@ -98,7 +97,7 @@ services:
       args:
         - IN_DOCKER_GO=${IN_DOCKER_GO:-true}
         - SSL=${SSL:-false}
-    container_name: collector
+    container_name: hl_collector
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     volumes:
@@ -124,19 +123,18 @@ services:
     build:
       dockerfile: ./packages/predictions/predictions.Dockerfile
       context: .
-    container_name: predictions
+    container_name: hl_predictions
     expose:
       - 5001
 
-  # Highlight application services
   backend:
-    container_name: backend-hg-adv
+    container_name: hl_backend
     image: ${BACKEND_IMAGE_NAME:-ghcr.io/highlight/highlight-backend:latest}
     restart: on-failure
     expose:
       - 8082
     volumes:
-      - highlight-data:/highlight-data
+      - hl_highlight-data:/highlight-data
       - ./backend/env.enc:/build/env.enc
       - ./backend/env.enc.dgst:/build/env.enc.dgst
       - ./backend/localhostssl/server.key:/build/localhostssl/server.key
@@ -152,7 +150,7 @@ services:
       - predictions
 
   frontend:
-    container_name: frontend-hg-adv
+    container_name: hl_frontend
     image: ${FRONTEND_IMAGE_NAME:-ghcr.io/highlight/highlight-frontend:latest}
     restart: on-failure
     volumes:
@@ -167,11 +165,11 @@ services:
       - backend
 
 volumes:
-  postgres-data:
-  clickhouse-data:
-  clickhouse-logs:
-  redis-data:
-  kafka-data:
-  zoo-log:
-  zoo-data:
-  highlight-data:
+  hl_postgres-data:
+  hl_clickhouse-data:
+  hl_clickhouse-logs:
+  hl_redis-data:
+  hl_kafka-data:
+  hl_zoo-log:
+  hl_zoo-data:
+  hl_highlight-data:
