@@ -133,7 +133,7 @@ services:
 
   backend:
     container_name: hl_backend
-    image: ghcr.io/highlight/highlight-backend:oss-v0.5.2
+    image: ghcr.io/highlight/highlight-backend:latest
     restart: on-failure
     expose:
       - 8082
