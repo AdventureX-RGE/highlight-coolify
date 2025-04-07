@@ -6,7 +6,7 @@ x-local-logging: &local-logging
 services:
   zookeeper:
     logging: *local-logging
-    image: ${ZOOKEEPER_IMAGE_NAME:-confluentinc/cp-zookeeper:7.7.0}
+    image: confluentinc/cp-zookeeper:7.7.0
     container_name: hl_zookeeper
     restart: on-failure
     volumes:
@@ -18,7 +18,7 @@ services:
 
   kafka:
     logging: *local-logging
-    image: ${KAFKA_IMAGE_NAME:-confluentinc/cp-kafka:7.7.0}
+    image: confluentinc/cp-kafka:7.7.0
     container_name: hl_kafka
     volumes:
       - hl_kafka-data:/var/lib/kafka/data
@@ -28,7 +28,7 @@ services:
     depends_on:
       - zookeeper
     environment:
-      KAFKA_ADVERTISED_LISTENERS: ${KAFKA_ADVERTISED_LISTENERS:-PLAINTEXT://kafka:9092}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_BROKER_ID: 1
       KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 268435456
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
@@ -45,7 +45,7 @@ services:
   redis:
     logging: *local-logging
     container_name: hl_redis
-    image: ${REDIS_IMAGE_NAME:-redis:7.4.0}
+    image: redis:7.4.0
     restart: on-failure
     volumes:
       - hl_redis-data:/data
@@ -59,7 +59,7 @@ services:
   postgres:
     logging: *local-logging
     container_name: hl_postgres
-    image: ${POSTGRES_IMAGE_NAME:-ankane/pgvector:v0.5.1}
+    image: ankane/pgvector:v0.5.1
     restart: on-failure
     expose:
       - 5432
@@ -77,7 +77,7 @@ services:
   clickhouse:
     logging: *local-logging
     container_name: hl_clickhouse
-    image: ${CLICKHOUSE_IMAGE_NAME:-clickhouse/clickhouse-server:24.3.15.72-alpine}
+    image: clickhouse/clickhouse-server:24.3.15.72-alpine
     restart: on-failure
     expose:
       - 8123
@@ -95,8 +95,8 @@ services:
       dockerfile: ./docker/collector.Dockerfile
       context: .
       args:
-        - IN_DOCKER_GO=${IN_DOCKER_GO:-true}
-        - SSL=${SSL:-false}
+        - IN_DOCKER_GO=true
+        - SSL=false
     container_name: hl_collector
     extra_hosts:
       - 'host.docker.internal:host-gateway'
@@ -116,6 +116,10 @@ services:
       - 6514
       - 8318
       - 8888
+    environment:
+      OTLP_ENDPOINT: http://hl_collector:4318
+      IN_DOCKER_GO: "true"
+      SSL: "false"
 
   predictions:
     logging: *local-logging
@@ -129,7 +133,7 @@ services:
 
   backend:
     container_name: hl_backend
-    image: ${BACKEND_IMAGE_NAME:-ghcr.io/highlight/highlight-backend:latest}
+    image: ghcr.io/highlight/highlight-backend:docker-v0.5.2
     restart: on-failure
     expose:
       - 8082
@@ -140,9 +144,36 @@ services:
       - ./backend/localhostssl/server.key:/build/localhostssl/server.key
       - ./backend/localhostssl/server.crt:/build/localhostssl/server.crt
     environment:
-      CLICKHOUSE_DATABASE_URL: http://hl_clickhouse:8123  # ✅ 添加 ClickHouse 连接地址
+      CLICKHOUSE_DATABASE_URL: http://hl_clickhouse:8123
+      CLICKHOUSE_ADDRESS: hl_clickhouse:9000
+      CLICKHOUSE_DATABASE: default
+      CLICKHOUSE_USERNAME: default
+      CLICKHOUSE_PASSWORD: ""
+      PSQL_HOST: hl_postgres
+      PSQL_PORT: 5432
+      PSQL_USER: postgres
+      PSQL_PASSWORD: password
+      PSQL_DB: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
-      # 你还可以在这里加其他环境变量（如 Redis/Kafka 配置）
+      REDIS_HOST: hl_redis
+      REDIS_PORT: 6379
+      KAFKA_BROKER: hl_kafka:9092
+      KAFKA_CLIENT_ID: highlight-backend
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_SERVERS: hl_kafka:9092
+      KAFKA_TOPIC_SESSION: sessions
+      KAFKA_TOPIC_METRICS: _metric_summary
+      KAFKA_TOPIC_TRACES: _traces
+      ALLOW_AUTO_TOPIC_CREATION: "false"
+      OTLP_ENDPOINT: http://hl_collector:4318
+      SSL: "false"
+      IN_DOCKER: "true"
+      IN_DOCKER_GO: "true"
+      ENVIRONMENT: dev
+      ADMIN_PASSWORD: password
+      RENDER_PREVIEW: "true"
+      GOMEMLIMIT: 16GiB
+      SESSION_FILE_PATH_PREFIX: /tmp/
     depends_on:
       - clickhouse
       - kafka
@@ -154,7 +185,7 @@ services:
 
   frontend:
     container_name: hl_frontend
-    image: ${FRONTEND_IMAGE_NAME:-ghcr.io/highlight/highlight-frontend:latest}
+    image: ghcr.io/highlight/highlight-frontend:docker-v0.5.2
     restart: on-failure
     volumes:
       - ./backend/localhostssl/server.key:/etc/ssl/private/ssl-cert.key
@@ -163,7 +194,16 @@ services:
       - 3000
       - 6006
       - 8080
-    env_file: .env
+    environment:
+      REACT_APP_FRONTEND_ORG: "1"
+      REACT_APP_DISABLE_ANALYTICS: "false"
+      REACT_APP_FRONTEND_URI: http://localhost:3000
+      REACT_APP_BACKEND_URI: http://localhost:8082
+      REACT_APP_PUBLIC_GRAPH_URI: http://localhost:8082/public
+      REACT_APP_PRIVATE_GRAPH_URI: http://localhost:8082/private
+      REACT_APP_OTLP_ENDPOINT: http://localhost:4318
+      REACT_APP_AUTH_MODE: password
+      REACT_APP_IN_DOCKER: "true"
     depends_on:
       - backend
 
