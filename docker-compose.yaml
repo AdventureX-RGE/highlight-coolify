@@ -133,7 +133,7 @@ services:
 
   backend:
     container_name: hl_backend
-    image: ghcr.io/highlight/highlight-backend:10127-merge-596639aa4dc34d193a233761df84343777df1c31
+    image: ghcr.io/highlight/highlight-backend:docker-v0.5.4
     restart: on-failure
     expose:
       - 8082
@@ -184,7 +184,7 @@ services:
 
   frontend:
     container_name: hl_frontend
-    image: ghcr.io/highlight/highlight-frontend:docker-v0.5.2
+    image: ghcr.io/highlight/highlight-frontend:docker-v0.5.4
     restart: on-failure
     volumes:
       - ./backend/localhostssl/server.key:/etc/ssl/private/ssl-cert.key
