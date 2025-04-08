@@ -182,6 +182,7 @@ services:
       - "traefik.http.routers.highlight-backend.rule=Host(`highlight.adventure-x.org`) && PathPrefix(`/backend`)"
       - "traefik.http.routers.highlight-backend.entrypoints=websecure"
       - "traefik.http.routers.highlight-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.highlight-backend.service=backend-service"
       - "traefik.http.services.backend-service.loadbalancer.server.port=8082"
       - "traefik.http.middlewares.strip-backend-prefix.stripPrefix.prefixes=/backend"
       - "traefik.http.routers.highlight-backend.middlewares=strip-backend-prefix"
