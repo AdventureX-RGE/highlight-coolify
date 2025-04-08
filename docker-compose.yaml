@@ -118,8 +118,8 @@ services:
       - 8888
     environment:
       OTLP_ENDPOINT: http://hl_collector:4318
-      IN_DOCKER_GO: "true"
-      SSL: "false"
+      IN_DOCKER_GO: true
+      SSL: false
 
   predictions:
     logging: *local-logging
@@ -162,14 +162,14 @@ services:
       KAFKA_TOPIC_SESSION: sessions
       KAFKA_TOPIC_METRICS: _metric_summary
       KAFKA_TOPIC_TRACES: _traces
-      ALLOW_AUTO_TOPIC_CREATION: "false"
+      ALLOW_AUTO_TOPIC_CREATION: false
       OTLP_ENDPOINT: http://hl_collector:4318
-      SSL: "false"
+      SSL: false
       IN_DOCKER: true
       IN_DOCKER_GO: true
       ENVIRONMENT: dev
       ADMIN_PASSWORD: password
-      RENDER_PREVIEW: "true"
+      RENDER_PREVIEW: true
       GOMEMLIMIT: 16GiB
       SESSION_FILE_PATH_PREFIX: /tmp/
     depends_on:
