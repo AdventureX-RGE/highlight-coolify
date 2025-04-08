@@ -49,8 +49,8 @@ services:
     restart: on-failure
     volumes:
       - hl_redis-data:/data
-    expose:
-      - 6379
+    ports:
+      - "127.0.0.1:6379:6379"
     command:
       - redis-server
       - --save 60 1
@@ -137,6 +137,7 @@ services:
     restart: on-failure
     expose:
       - 8082
+    network_mode: "host"
     volumes:
       - hl_highlight-data:/highlight-data
       - ./backend/localhostssl/server.key:/build/localhostssl/server.key
