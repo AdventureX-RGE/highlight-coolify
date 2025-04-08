@@ -49,6 +49,11 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: 'hl_zookeeper:2181'
     networks:
       - highlight_network
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server hl_kafka:9092 --list || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   redis:
     logging: *local-logging
