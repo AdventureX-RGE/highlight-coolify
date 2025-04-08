@@ -61,7 +61,7 @@ func SetupAuthClient(ctx context.Context, store *store.Store, authMode AuthMode,
 
 	log.WithContext(ctx).WithField("mode", authMode).Info("configuring private graph auth client")
 	if lo.Contains(EnterpriseAuthModes, authMode) {
-		enterprise.RequireEnterprise(ctx)
+		// enterprise.RequireEnterprise(ctx)
 	}
 	var err error
 	if authMode == Firebase {
