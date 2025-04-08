@@ -174,6 +174,7 @@ services:
       RENDER_PREVIEW: true
       GOMEMLIMIT: 16GiB
       SESSION_FILE_PATH_PREFIX: /tmp/
+      LICENSE_KEY: 
     depends_on:
       - clickhouse
       - kafka
