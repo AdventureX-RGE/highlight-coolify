@@ -263,7 +263,7 @@ func (h *handlers) ProcessRetentionDeletions(ctx context.Context) {
 		log.WithContext(ctx).Error("sessionRetentionDays <= 0, skipping SessionDeleteJob")
 		return
 	}
-	enterprise.RequireEnterprise(ctx)
+	// enterprise.RequireEnterprise(ctx)
 
 	var projectIds []int
 	if err := h.db.Model(&model.Project{}).Select("id").Find(&projectIds).Error; err != nil {
