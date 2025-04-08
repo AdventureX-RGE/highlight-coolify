@@ -176,6 +176,7 @@ services:
       SESSION_FILE_PATH_PREFIX: /tmp/
       LICENSE_KEY: 
       DOPPLER_CONFIG: dcoker
+      SESSION_RETENTION_DAYS:
     depends_on:
       - clickhouse
       - kafka
