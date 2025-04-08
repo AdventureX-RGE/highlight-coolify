@@ -19,6 +19,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - highlight_network
 
   kafka:
     logging: *local-logging
@@ -32,7 +34,7 @@ services:
     depends_on:
       - zookeeper
     environment:
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://hl_kafka:9092
       KAFKA_BROKER_ID: 1
       KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 268435456
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
@@ -45,6 +47,8 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+    networks:
+      - highlight_network
 
   redis:
     logging: *local-logging
@@ -59,6 +63,8 @@ services:
       - redis-server
       - --save 60 1
       - --loglevel warning
+    networks:
+      - highlight_network
 
   postgres:
     logging: *local-logging
@@ -93,6 +99,8 @@ services:
       - ./docker/users.xml:/etc/clickhouse-server/users.d/highlight.xml
       - hl_clickhouse-data:/var/lib/clickhouse
       - hl_clickhouse-logs:/var/log/clickhouse-server
+    networks:
+      - highlight_network
 
   collector:
     logging: *local-logging
@@ -126,6 +134,8 @@ services:
       OTLP_ENDPOINT: http://hl_collector:4318
       IN_DOCKER_GO: true
       SSL: false
+    networks:
+      - highlight_network
 
   predictions:
     logging: *local-logging
@@ -136,6 +146,8 @@ services:
     container_name: hl_predictions
     expose:
       - 5001
+    networks:
+      - highlight_network
 
   backend:
     container_name: hl_backend
