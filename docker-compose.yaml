@@ -175,7 +175,7 @@ services:
       GOMEMLIMIT: 16GiB
       SESSION_FILE_PATH_PREFIX: /tmp/
       LICENSE_KEY: 
-      DOPPLER_CONFIG: producation
+      DOPPLER_CONFIG: dcoker
     depends_on:
       - clickhouse
       - kafka
