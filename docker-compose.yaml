@@ -143,40 +143,7 @@ services:
       - ./backend/localhostssl/server.crt:/build/localhostssl/server.crt
       - ./backend/env.enc:/build/env.enc
       - ./backend/env.enc.dgst:/build/env.enc.dgst
-    environment:
-      CLICKHOUSE_DATABASE_URL: http://hl_clickhouse:8123
-      CLICKHOUSE_ADDRESS: hl_clickhouse:9000
-      CLICKHOUSE_DATABASE: default
-      CLICKHOUSE_USERNAME: default
-      CLICKHOUSE_PASSWORD: ""
-      PSQL_HOST: hl_postgres
-      PSQL_PORT: 5432
-      PSQL_USER: postgres
-      PSQL_PASSWORD: password
-      PSQL_DB: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
-      REDIS_HOST: hl_redis
-      REDIS_PORT: 6379
-      KAFKA_BROKER: hl_kafka:9092
-      KAFKA_CLIENT_ID: highlight-backend
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_SERVERS: hl_kafka:9092
-      KAFKA_TOPIC_SESSION: sessions
-      KAFKA_TOPIC_METRICS: _metric_summary
-      KAFKA_TOPIC_TRACES: _traces
-      ALLOW_AUTO_TOPIC_CREATION: false
-      OTLP_ENDPOINT: http://hl_collector:4318
-      SSL: false
-      IN_DOCKER: true
-      IN_DOCKER_GO: true
-      ENVIRONMENT: dev
-      ADMIN_PASSWORD: password
-      RENDER_PREVIEW: true
-      GOMEMLIMIT: 16GiB
-      SESSION_FILE_PATH_PREFIX: /tmp/
-      LICENSE_KEY: 
-      DOPPLER_CONFIG: dcoker
-      SESSION_RETENTION_DAYS:
+    env_file: .env
     depends_on:
       - clickhouse
       - kafka
@@ -197,16 +164,7 @@ services:
       - 3000
       - 6006
       - 8080
-    environment:
-      REACT_APP_FRONTEND_ORG: 1
-      REACT_APP_DISABLE_ANALYTICS: false
-      REACT_APP_FRONTEND_URI: http://localhost:3000
-      REACT_APP_BACKEND_URI: http://localhost:8082
-      REACT_APP_PUBLIC_GRAPH_URI: http://localhost:8082/public
-      REACT_APP_PRIVATE_GRAPH_URI: http://localhost:8082/private
-      REACT_APP_OTLP_ENDPOINT: http://localhost:4318
-      REACT_APP_AUTH_MODE: password
-      REACT_APP_IN_DOCKER: true
+    env_file: .env
     depends_on:
       - backend
 
