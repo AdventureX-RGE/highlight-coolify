@@ -173,7 +173,6 @@ services:
       GOMEMLIMIT: 16GiB
       SESSION_FILE_PATH_PREFIX: /tmp/
       DISABLE_ENTERPRISE: "true"
-      LICENSE_KEY: "something"
     depends_on:
       - clickhouse
       - kafka
