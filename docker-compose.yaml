@@ -3,6 +3,10 @@ version: '3.8'
 x-local-logging: &local-logging
   driver: local
 
+networks:
+  highlight_network:
+    driver: bridge
+
 services:
   zookeeper:
     logging: *local-logging
@@ -73,6 +77,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - highlight_network
 
   clickhouse:
     logging: *local-logging
@@ -152,6 +158,8 @@ services:
       - zookeeper
       - collector
       - predictions
+    networks:
+      - highlight_network
 
   frontend:
     container_name: hl_frontend
