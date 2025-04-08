@@ -133,7 +133,7 @@ services:
 
   backend:
     container_name: hl_backend
-    image: ghcr.io/highlight/highlight-backend:docker-v0.5.4
+    image: ghcr.io/highlight/highlight-backend:docker-v0.5.2
     restart: on-failure
     expose:
       - 8082
@@ -165,14 +165,13 @@ services:
       ALLOW_AUTO_TOPIC_CREATION: "false"
       OTLP_ENDPOINT: http://hl_collector:4318
       SSL: "false"
-      IN_DOCKER: "true"
-      IN_DOCKER_GO: "true"
+      IN_DOCKER: true
+      IN_DOCKER_GO: true
       ENVIRONMENT: dev
       ADMIN_PASSWORD: password
       RENDER_PREVIEW: "true"
       GOMEMLIMIT: 16GiB
       SESSION_FILE_PATH_PREFIX: /tmp/
-      DISABLE_ENTERPRISE: "true"
     depends_on:
       - clickhouse
       - kafka
@@ -184,7 +183,7 @@ services:
 
   frontend:
     container_name: hl_frontend
-    image: ghcr.io/highlight/highlight-frontend:docker-v0.5.4
+    image: ghcr.io/highlight/highlight-frontend:docker-v0.5.2
     restart: on-failure
     volumes:
       - ./backend/localhostssl/server.key:/etc/ssl/private/ssl-cert.key
