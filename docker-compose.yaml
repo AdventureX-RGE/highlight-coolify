@@ -133,7 +133,7 @@ services:
 
   backend:
     container_name: hl_backend
-    image: ghcr.io/highlight/highlight-backend:docker-v0.5.4
+    image: ghcr.io/highlight/highlight-backend:docker-v0.5.2
     restart: on-failure
     expose:
       - 8082
@@ -141,6 +141,8 @@ services:
       - hl_highlight-data:/highlight-data
       - ./backend/localhostssl/server.key:/build/localhostssl/server.key
       - ./backend/localhostssl/server.crt:/build/localhostssl/server.crt
+      - ./backend/env.enc:/build/env.enc
+      - ./backend/env.enc.dgst:/build/env.enc.dgst
     environment:
       CLICKHOUSE_DATABASE_URL: http://hl_clickhouse:8123
       CLICKHOUSE_ADDRESS: hl_clickhouse:9000
@@ -183,7 +185,7 @@ services:
 
   frontend:
     container_name: hl_frontend
-    image: ghcr.io/highlight/highlight-frontend:docker-v0.5.4
+    image: ghcr.io/highlight/highlight-frontend:docker-v0.5.2
     restart: on-failure
     volumes:
       - ./backend/localhostssl/server.key:/etc/ssl/private/ssl-cert.key
