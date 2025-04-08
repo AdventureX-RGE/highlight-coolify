@@ -218,7 +218,7 @@ func IsProduction() bool {
 }
 
 func IsEnterpriseDeploy() bool {
-	return !IsProduction() && (Config.InDocker == "enterprise" || (RuntimeFlag != nil && *RuntimeFlag != "all"))
+	return false
 }
 
 func UseSSL() bool {
