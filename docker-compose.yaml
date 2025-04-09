@@ -173,20 +173,20 @@ services:
       - ./backend/env.enc.dgst:/build/env.enc.dgst
     env_file: .env
     depends_on:
-    postgres:
-      condition: service_healthy
-    clickhouse:
-      condition: service_started
-    kafka:
-      condition: service_healthy
-    redis:
-      condition: service_healthy
-    zookeeper:
-      condition: service_started
-    collector:
-      condition: service_started
-    predictions:
-      condition: service_started
+      postgres:
+        condition: service_healthy
+      clickhouse:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      zookeeper:
+        condition: service_started
+      collector:
+        condition: service_started
+      predictions:
+        condition: service_started
     networks:
       - highlight_network
     labels:
