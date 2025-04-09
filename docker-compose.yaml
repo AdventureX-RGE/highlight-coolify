@@ -73,6 +73,7 @@ services:
 
   postgres:
     logging: *local-logging
+    container_name: hl_postgres
     image: ankane/pgvector:v0.5.1
     restart: on-failure
     expose:
