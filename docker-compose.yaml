@@ -52,7 +52,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "kafka-topics --bootstrap-server hl_kafka:9092 --list || exit 1"]
       interval: 10s
-      timeout: 5s
+      timeout: 20s
       retries: 10
 
   redis:
