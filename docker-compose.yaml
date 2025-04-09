@@ -106,6 +106,11 @@ services:
       - hl_clickhouse-logs:/var/log/clickhouse-server
     networks:
       - highlight_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8123/ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   collector:
     logging: *local-logging
@@ -171,9 +176,9 @@ services:
       postgres:
         condition: service_healthy
       clickhouse:
-        condition: service_started
+        condition: service_healthy
       kafka:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_started
       zookeeper:
