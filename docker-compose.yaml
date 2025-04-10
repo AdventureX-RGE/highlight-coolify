@@ -190,13 +190,19 @@ services:
       - hl-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.highlight-backend.rule=Host(`highlight.adventure-x.org`) && PathPrefix(`/backend`)"
-      - "traefik.http.routers.highlight-backend.entrypoints=websecure"
-      - "traefik.http.routers.highlight-backend.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.highlight-backend.service=backend"
-      - "traefik.http.services.backend.loadbalancer.server.port=8082"
-      - "traefik.http.middlewares.highlight-backend-strip.stripPrefix.prefixes=/backend"
-      - "traefik.http.routers.highlight-backend.middlewares=highlight-backend-strip,redirect-to-https@file"
+      - "traefik.http.middlewares.infra-highlight-hwh9no-58-strip.stripPrefix.prefixes=/backend"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-web.rule=Host(`highlight.adventure-x.org`) && PathPrefix(`/backend`)"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-web.entrypoints=web"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-web.middlewares=infra-highlight-hwh9no-58-strip,redirect-to-https@file"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-web.service=infra-highlight-hwh9no-58-web"
+      - "traefik.http.services.infra-highlight-hwh9no-58-web.loadbalancer.server.port=8082"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-websecure.rule=Host(`highlight.adventure-x.org`) && PathPrefix(`/backend`)"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-websecure.entrypoints=websecure"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-websecure.middlewares=infra-highlight-hwh9no-58-strip"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-websecure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-websecure.service=infra-highlight-hwh9no-58-websecure"
+      - "traefik.http.services.infra-highlight-hwh9no-58-websecure.loadbalancer.server.port=8082"
+
 
 
   frontend:
