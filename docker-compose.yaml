@@ -162,7 +162,7 @@ services:
   backend:
     container_name: hl_backend
     image: ghcr.io/highlight/highlight-backend:docker-v0.5.2
-    # restart: on-failure
+    restart: no
     expose:
       - 8082
     volumes:
