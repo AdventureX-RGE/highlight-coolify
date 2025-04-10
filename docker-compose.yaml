@@ -188,7 +188,7 @@ services:
     networks:
       - dokploy-network
     labels:
-      - "traefik.http.routers.infra-highlight-hwh9no-58-web.middlewares=infra-openpanel-uttntd-59-web-strip@docker,redirect-to-https@file
+      - "traefik.http.routers.infra-highlight-hwh9no-58-web.middlewares=infra-openpanel-uttntd-59-web-strip@docker,redirect-to-https@file“
       - "traefik.http.middlewares.infra-highlight-hwh9no-58-web-strip.stripPrefix.prefixes=/api"
       - "traefik.http.middlewares.infra-highlight-hwh9no-58-websecure-strip.stripPrefix.prefixes=/api"
 
