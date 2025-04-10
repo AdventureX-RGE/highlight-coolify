@@ -188,14 +188,9 @@ services:
     networks:
       - dokploy-network
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.highlight-backend.rule=Host(`highlight.adventure-x.org`) && PathPrefix(`/backend`)"
-      - "traefik.http.routers.highlight-backend.entrypoints=websecure"
-      - "traefik.http.routers.highlight-backend.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.highlight-backend.service=backend-service"
-      - "traefik.http.services.backend-service.loadbalancer.server.port=8082"
-      - "traefik.http.middlewares.strip-backend-prefix.stripPrefix.prefixes=/backend"
-      - "traefik.http.routers.highlight-backend.middlewares=strip-backend-prefix"
+      - "traefik.http.routers.infra-highlight-hwh9no-58-web.middlewares=infra-openpanel-uttntd-59-web-strip@docker,redirect-to-https@file
+      - "traefik.http.middlewares.infra-highlight-hwh9no-58-web-strip.stripPrefix.prefixes=/api"
+      - "traefik.http.middlewares.infra-highlight-hwh9no-58-websecure-strip.stripPrefix.prefixes=/api"
 
   frontend:
     container_name: hl_frontend
